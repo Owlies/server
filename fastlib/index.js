@@ -1,12 +1,15 @@
 var redisClient = require('redis').createClient;
 var redis = redisClient(6379, 'localhost');
 var express = require('express'),
+    bodyParser = require('body-parser'),
     MongoClient = require('mongodb').MongoClient,
     app = express(),
     mongoUrl = 'mongodb://localhost:29000/towergirl';
 var ObjectId = require('mongodb').ObjectID;
 var assert = require('assert');
 var access = require('./access.js');
+
+var jsonParser = bodyParser.json()
 
 MongoClient.connect(mongoUrl, function (err, db) {
     if (err) throw 'Error connecting to database - ' + err;
@@ -41,7 +44,7 @@ MongoClient.connect(mongoUrl, function (err, db) {
 
     app.get('/iteminfocache/:time', function (req, res) {
         if (!req.param('time')) 
-	    res.status(400).send("Please send a proper title");
+	    res.status(400).send("Please send a proper item time");
         else {
             access.findItemInfoByTimeCached(db, redis, req.param('time'), function (item) {
                 if (!item) 
@@ -51,6 +54,33 @@ MongoClient.connect(mongoUrl, function (err, db) {
             });
         }
     });
+
+    app.post('/iteminfo', jsonParser, function (req, res) {
+        if (!req.body.mId || !req.body.mTime || !req.body.mFloat) 
+	    res.status(400).send("Please send a mId, mTime and mFloat for the item");
+        else {
+            access.saveItemInfo(db, req.body.mId, req.body.mTime, req.body.mFloat, function (err) {
+                if (err) 
+		    res.status(500).send("Server error");
+                else 
+		    res.status(201).send("Save item info to MonogoDB successfully");
+            });
+        }
+    });
+
+    app.post('/iteminfocache/:mid', function (req, res) {
+        if (!req.param('mid')) 
+            res.status(400).send("Please send a proper item id");
+        else {      
+            access.saveItemInfoCached(db, redis, req.param('mid'), function (item) {
+                if (!item)
+                    res.status(500).send("Server error");
+                else
+                    res.status(201).send("Save item info to redis successfully");
+            });
+        }
+    });
+
 
     app.listen(29370, function () {
         console.log('Listening on port 29370');

@@ -1,0 +1,9 @@
+1.POST data to API and save it to Mongodb
+curl -X POST --data '{"mId":"1", "mTime":"2", "mFloat":"0.1" }' -H "Content-Type: application/json" localhost:29370/iteminfo
+
+2.Copy data from Mongodb to Redis
+curl -X POST localhost:29370/iteminfocache/1
+
+3.Get data from Redis (if available) or Mongodb
+curl -X GET localhost:29370/iteminfocache/2
+
