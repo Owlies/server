@@ -1,5 +1,6 @@
 local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
+local physic = require "owlies.physic"
 
 local max_client = 64
 
@@ -15,6 +16,7 @@ skynet.start(function()
 		maxclient = max_client,
 		nodelay = true,
 	})
+	physic.testprint()
 	skynet.error("Watchdog listen on", 8888)
 	local watchdog = skynet.newservice("game")
 	skynet.exit()
