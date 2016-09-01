@@ -34,6 +34,18 @@ For details: http://lua-users.org/lists/lua-l/2014-03/msg00489.html
 
 You can also use official Lua versions, just edit the Makefile by yourself.
 
+## How To start a olwies server
+
+first, build skynet
+second, build owlies
+like:
+"make all" in dir owlies
+
+
+```
+./skynet owlies/service/config
+```
+
 ## How To Use (Sorry, Only in Chinese now)
 
 * Read Wiki https://github.com/cloudwu/skynet/wiki
