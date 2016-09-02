@@ -1,6 +1,7 @@
  
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <lua.h>
 #include <lauxlib.h>
@@ -11,7 +12,12 @@ static int testprint(lua_State *L)
 	printf("interesting! %s \n",msg);
 	lua_pop(L,1);
 	
-	return -1;
+	char ret[50] = "+++";
+	strcat(ret,msg);
+	//sprintf("+++%s",ret,msg);
+	lua_pushstring(L,ret);
+	
+	return 1;
 }
 
 int luaopen_owlies_physic(lua_State *L) {

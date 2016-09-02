@@ -17,7 +17,8 @@ skynet.start(function()
 		maxclient = max_client,
 		nodelay = true,
 	})
-	physic.testprint("wtf")
+	local result = physic.testprint("wtf")
+	print(result)
 	protobufLoader.testFunction()
 	skynet.error("Watchdog listen on", 8888)
 	local watchdog = skynet.newservice("game")
