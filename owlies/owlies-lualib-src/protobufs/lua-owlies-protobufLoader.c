@@ -6,18 +6,22 @@
 #include <string.h>
 #include <assert.h>
 
-static int
-testFunction (lua_State *L) {
+static int testFunction (lua_State *L) {
 	printf("test function called\n");
 	return 0;
 }
 
-int
-luaopen_owlies_protobufLoader(lua_State *L) {
+static int load (lua_State *L) {
+	printf("protobuf load\n");
+	return 0;
+}
+
+int luaopen_owlies_protobufLoader(lua_State *L) {
 	luaL_checkversion(L);
 
 	luaL_Reg l[] = {
 		{ "testFunction" , testFunction },
+		{ "load" , load },
 		{ NULL, NULL },
 	};
 
